@@ -1,23 +1,15 @@
 <%
 function layoutDiv() {
-  if (!item.content?.length && !item.src?.length) return ''
+  if (!item.content?.length) return ''
   var el = '';
-  el += `<widget class="widget-wrapper${scrollreveal(' ')} markdown">`
+  el += '<widget class="widget-wrapper markdown">';
   if (item.title?.length > 0) {
-    el += '<div class="widget-header dis-select">';
+    el += '<div class="widget-header cap theme dis-select">';
     el += '<span class="name">' + item.title + '</span>';
     el += '</div>';
   }
   el += '<div class="widget-body fs14">';
-  if (item.content) {
-    el += markdown(item.content);
-  }
-  if (item.src) {
-    el += `<div class="stellar-marked-api md-marked" src="${item.src}"></div>`
-  }
-  if (item.linklist) {
-    el += partial('components/linklist', {item: item.linklist})
-  }
+  el += markdown(item.content);
   el += '</div>';
   el += '</widget>';
   return el;

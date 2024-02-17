@@ -10,14 +10,6 @@
 module.exports = ctx => function(args) {
   const full_url_for = require('hexo-util').full_url_for.bind(ctx)
   args = ctx.args.map(args, ['icon', 'desc'], ['url', 'title'])
-  if (args.url == null) {
-    return '';
-  }
-  const url = full_url_for(args.url)
-  args.api = ctx.theme.config.services.siteinfo?.api
-  if (args.api) {
-    args.api = args.api.replace('${href}', url)
-  }
   var autofill = []
   if (!args.title) {
     autofill.push('title')
@@ -35,9 +27,6 @@ module.exports = ctx => function(args) {
     el += ' target="_blank" rel="external nofollow noopener noreferrer"'
   }
   el += ' cardlink'
-  if (args.api) {
-    el += ` api="${args.api}"`
-  }
   el += ' autofill="'
   el += autofill.join(',')
   el += '"'
@@ -56,10 +45,10 @@ module.exports = ctx => function(args) {
     return '<span class="title">' + (args.title || args.url) + '</span>'
   }
   function loadDesc() {
-    return '<span class="cap desc footnote"></span>'
+    return '<span class="cap desc fs12"></span>'
   }
   function loadLink() {
-    return '<span class="cap link footnote">' + full_url_for(args.url) + '</span>'
+    return '<span class="cap link fs12">' + full_url_for(args.url) + '</span>'
   }
 
   if (args.desc) {

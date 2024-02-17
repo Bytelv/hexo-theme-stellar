@@ -1,35 +1,41 @@
 <%
 function layoutWikiCover() {
   var el = '';
-  const proj = theme.wiki.tree[page.wiki]
+  let proj = theme.wiki.projects[page.wiki];
   if (proj == undefined) {
     return el;
   }
   if (proj.homepage.path !== page.path) {
     return;
   }
-  if (proj.coverpage == undefined || proj.coverpage === false || proj.coverpage === '[]') {
+  if (proj.cover == undefined || proj.cover === false || proj.cover === '[]') {
     return el;
   }
-  var coverpage = proj.coverpage;
-  let cover = proj.cover;
+  var cover = proj.cover;
+  let logo = proj.logo;
   let title = proj.title || page.title;
   let desc = proj.description || page.description;
-  if (coverpage === true) {
-    coverpage = ['cover', 'title', 'description'];
+  if (cover === true) {
+    cover = ['logo', 'title', 'description'];
   }
-  el += '<div class="l_cover wiki' + scrollreveal(' ') + '">';
+  el += '<div class="l_cover wiki' + scrollreveal() + '">';
   el += '<article class="cover-wrap md-text">';
 
-  if (cover?.length > 0 && coverpage.includes('cover')) {
-    el += `<div class="preview cover"><img src="${cover}"/></div>`
+  if (logo && logo.src && cover.includes('logo')) {
+    el += '<div class="preview">';
+    if (logo.large) {
+      el += '<img src="' + logo.src + '" height="' + logo.large + '">';
+    } else {
+      el += '<img src="' + logo.src + '">';
+    }
+    el += '</div>';
   }
-  if (title && coverpage.includes('title')) {
+  if (title && cover.includes('title')) {
     el += '<div class="cover-title">';
     el += '<span>' + title + '</span>';
     el += '</div>';
   }
-  if (desc && coverpage.includes('description')) {
+  if (desc && cover.includes('description')) {
     el += '<div class="description">' + desc + '</div>';
   }
   el += '<div class="start-wrap">';

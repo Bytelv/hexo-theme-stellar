@@ -1,16 +1,31 @@
-img.lazy
-  &:not(.loaded)
-    opacity: 0
-  &.loaded,&.error
-    opacity: 1
-  if hexo-config('plugins.lazyload.transition') == 'blur'
-    trans1 all 0.75s
+trans-cover($p, $t = 0.28s)
+  trans2pro: transform 0.5s $p $t
+trans-site($p)
+  trans2: box-shadow transform $p
+trans-user($p)
+  trans3: box-shadow transform $p
+
+if hexo-config('plugins.lazyload.transition') == 'blur'
+  img.lazy
+    trans-cover filter
     &:not(.loaded)
-      filter blur(50px)
-      -webkit-filter blur(50px)
+      filter blur(8px)
+      -webkit-filter blur(8px)
     &.loaded,&.error
       filter none
       -webkit-filter none
-  else
-    trans1 all 0.38s
-    
+  .group-body .site-card .card-link>img
+    trans-site filter
+  .group-body .user-card .card-link>img
+    trans-user filter
+else
+  img.lazy
+    trans-cover opacity 0.5s
+    &:not(.loaded)
+      opacity: 0
+    &.loaded,&.error
+      opacity: 1
+  .group-body .site-card .card-link>img
+    trans-site opacity
+  .group-body .user-card .card-link>img
+    trans-user opacity

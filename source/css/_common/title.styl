@@ -1,31 +1,29 @@
 h1,.h1
-  font-size: var(--fsh2)
+  font-size: $fs-h1
   font-weight: 700
   @media screen and (max-width: $device-mobile)
-    font-size: var(--fsh2)
+    font-size: $fs-h1
 h2,.h2
-  font-size: var(--fsh2)
-  margin-top: 1.5em
+  font-size: $fs-h2
 h3,.h3
-  font-size: var(--fsh3)
+  font-size: $fs-h3
 h4,.h4
-  font-size: var(--fsh4)
+  font-size: $fs-h4
 h5
-  font-size: 'calc(%s + 1px)' % var(--fsp)
+  font-size: $fs-h5
 h6
-  font-size: 'calc(%s + 0px)' % var(--fsp)
+  font-size: $fs-h6
 
 // 次级段落字号
-.fs15
-  --fsp: $fs-15
-  font-size: var(--fsp)
 .fs14
-  --fsp: $fs-14
-  font-size: var(--fsp)
-
-.footnote
-  --fsp: $fs-13
-  font-size: var(--fsp)
+  font-size: $fs-14
+  p
+    font-size: $fs-14 !important
+  li
+    font-size: $fs-14 !important
+// 脚标字号
+.fs12
+  font-size: $fs-12
 
 .widgets
   .post-title

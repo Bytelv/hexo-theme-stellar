@@ -1,7 +1,6 @@
 .tag-plugin.folders
   margin: var(--gap-p) 0
-  --fsp: $fsp2
-  font-size: var(--fsp)
+  font-size: $fs-14
   border-top: 1px solid var(--block-border)
   overflow: hidden
   .folder
@@ -25,7 +24,7 @@
         display: inline
         border-bottom: none !important
     &:hover
-      color: var(--text)
+      color: var(--text-p0)
     &:after
       position: absolute
       content: '+'
@@ -43,7 +42,7 @@
       content: '-'
       
   >div.body
-    --fsp: $fsp1
+    font-size: $fs-15
     >:first-child
       margin-top: 1rem
     >:last-child

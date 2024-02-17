@@ -1,8 +1,11 @@
 <%
 function generate_title() {
+  if (page.seo_title) {
+    return page.seo_title;
+  }
   if (page.wiki) {
-    const proj = theme.wiki.tree[page.wiki]
-    const wiki = proj?.name || page.wiki
+    let proj = theme.wiki.projects[page.wiki];
+    let wiki = (proj && proj.name) || page.wiki;
     if (page.title) {
       return wiki + __('symbol.colon') + page.title + ' - ' + config.title;
     } else {
@@ -23,10 +26,10 @@ function generate_description() {
   if (theme.open_graph && theme.open_graph.enable) {
     return '';
   }
-  if (page.wiki) {
-    const proj = theme.wiki.tree[page.wiki]
-    if (proj?.description) {
-      return '<meta name="description" content="' + proj.description + '">'
+  if (page.layout == 'wiki' && page.wiki) {
+    let proj = theme.wiki.projects[page.wiki];
+    if (proj && proj.description) {
+      return '<meta name="description" content="' + proj.description + '">';
     }
   }
   if (page.description || page.excerpt || page.content) {
@@ -62,40 +65,20 @@ function og_args() {
   if (page.layout == 'post' && page.cover) {
     args.twitter_card = 'summary_large_image';
   }
-  return Object.assign(args, page.open_graph);
+  return args;
 }
-
-function preconnect() {
-  var el = '';
-  for (let href of (theme.preconnect || [])) {
-    el += `<link rel="preconnect" href="${href}" crossorigin>`;
-  }
-  return el;
-}
-
-function custom_inject() {
-  var el = '';
-  for (let item of (config.inject?.head || [])) {
-    el += item;
-  }
-  for (let item of (theme.inject?.head || [])) {
-    el += item;
-  }
-  for (let item of (page.inject?.head || [])) {
-    el += item;
-  }
-  return el;
-}
-
 %>
-
 <head>
-  <meta charset="utf-8">
-  <meta name="hexo-theme" content="<%- stellar_info('tree') %>" theme-name="<%- stellar_info('name') %>" theme-version="<%- stellar_info('version') %>">
-  <%- generate_robots() %>
   <%- meta_generator() %>
+  <meta name="hexo-theme" content="<%- stellar_info('tree') %>">
+  <meta charset="utf-8">
+  <%- generate_robots() %>
+
   <meta http-equiv='x-dns-prefetch-control' content='on' />
-  <%- preconnect() %>
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
   <meta name="renderer" content="webkit">
   <meta name="force-rendering" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
@@ -118,7 +101,11 @@ function custom_inject() {
     <%- feed_tag(config.feed.path, {title: config.title}) %>
   <% } %>
 
-  <link rel="stylesheet" href="<%- `${theme.stellar.main_css}?v=${stellar_info('version')}` %>">
+  <% if (theme.stellar.cdn_css) { %>
+    <%- css(theme.stellar.cdn_css) %>
+  <% } else { %>
+    <%- css('/css/main.css') %>
+  <% } %>
 
   <% if (config.favicon) { %>
     <%- favicon_tag(config.favicon) %>
@@ -128,5 +115,16 @@ function custom_inject() {
     <%- css(theme.style.codeblock.highlightjs_theme) %>
   <% } %>
 
-  <%- custom_inject() %>
+  <% if (theme.plugins.katex && theme.plugins.katex.enable) { %>
+    <%- theme.plugins.katex.min_css %>
+    <%- theme.plugins.katex.min_js %>
+    <%- theme.plugins.katex.auto_render_min_js %>
+  <% } %>
+
+
+  <% if (config.inject && config.inject.head){ %>
+    <% (config.inject.head||[]).forEach(function(item){ %>
+      <%- item %>
+    <% }) %>
+  <% } %>
 </head>
